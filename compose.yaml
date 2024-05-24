@@ -1,0 +1,40 @@
+services:
+  app_dev:
+    # docker compose run --rm --entrypoint '' app_dev /bin/bash
+    build:
+      dockerfile: Dockerfile.dev
+    tty: true
+    environment:
+      - TZ
+      - DATABASE_URL
+    volumes:
+      - .:/app:delegated
+  app:
+    image: ghcr.io/shibu1x/ur_v3
+    # build: .
+    environment:
+      - TZ
+      - DATABASE_URL
+      - HOST=app_server:50051
+    depends_on:
+      - postgres
+  app_server:
+    image: ghcr.io/shibu1x/ur_v3
+    # build: .
+    environment:
+      - TZ
+      - DATABASE_URL
+    command: [ "server" ]
+    ports:
+      - "50051:50051"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16
+    environment:
+      - TZ
+      - POSTGRES_PASSWORD
+    volumes:
+      - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
+    # ports:
+    #   - "5432:5432"

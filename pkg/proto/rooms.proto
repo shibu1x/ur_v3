@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package rooms;
+
+option go_package = "./pkg/grpc";
+
+service RoomService {
+    rpc GetRoomsByPrefCode (GetRoomsByPrefCodeRequest) returns (GetRoomsByPrefCodeResponse);
+}
+
+message GetRoomsByPrefCodeRequest {
+    string pref_code = 1;
+}
+
+message Room {
+    string pref_code = 1;
+    string house_code = 2;
+    string room_code = 3;
+    string pref_name = 4;
+    string house_name = 5;
+    string status = 6;
+    int32  price = 7;
+    int32  fee = 8;
+    string type = 9;
+    int32  space = 10;
+    int32  floor = 11;
+    string layout_url = 12;
+    string url = 13;
+}
+
+message GetRoomsByPrefCodeResponse {
+    repeated Room rooms = 1;
+}

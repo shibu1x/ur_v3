@@ -1,0 +1,11 @@
+output = "pkg/models"
+add-enum-types = true
+
+[psql]
+  dbname  = "ur_v3"
+  host    = "postgres"
+  port    = 5432
+  user    = "postgres"
+  pass    = "password"
+  sslmode = "disable"
+  blacklist = []

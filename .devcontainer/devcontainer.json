@@ -1,0 +1,18 @@
+{
+    "dockerComposeFile": "../compose.yaml",
+    "service": "app_dev",
+    "runServices": [
+        "app_dev",
+        "postgres"
+    ],
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "golang.go",
+                "zxh404.vscode-proto3",
+                "tamasfe.even-better-toml"
+            ]
+        }
+    }
+}
