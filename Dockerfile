@@ -9,24 +9,24 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /crawl cmd/crawl/main.go \
-    && go build -o /server cmd/server/main.go \
-    && go build -o /client cmd/client/main.go
+RUN GOOS=linux CGO_ENABLED=0 go build -o crawl cmd/crawl/main.go \
+    && CGO_ENABLED=0 go build -o server cmd/server/main.go \
+    && CGO_ENABLED=1 go build -o client cmd/client/main.go
 
 # # Run the tests in the container
 # FROM build-stage AS run-test-stage
 # RUN go test -v ./...
 
 # Deploy the application binary into a lean image
-FROM golang:1-bookworm AS build-release-stage
+FROM debian:12-slim AS build-release-stage
 
 WORKDIR /
 
-COPY --from=build-stage /crawl /usr/local/bin/
-COPY --from=build-stage /server /usr/local/bin/
-COPY --from=build-stage /client /usr/local/bin/
-COPY ./entrypoint.sh /usr/local/bin/
+COPY --from=busybox:stable-uclibc /bin/sh /bin/sh
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY --from=build-stage /app/crawl /usr/local/bin/
+COPY --from=build-stage /app/server /usr/local/bin/
+COPY --from=build-stage /app/client /usr/local/bin/
+COPY --chmod=755 ./entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["entrypoint.sh"]
