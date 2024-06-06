@@ -19,7 +19,7 @@ cd ur_v3
 docker compose up -d app_server
 ```
 
-### データ収取を実行する
+### データ取得を実行する
 
 https://www.ur-net.go.jp/chintai/ から公開されているデータを取得し、 postgres に登録する
 
